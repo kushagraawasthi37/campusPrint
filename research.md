@@ -1,69 +1,51 @@
-# CampusPrint: Research & Problem Verification
+# Problem Exploration & Research Context: CampusPrint
 
-## 1. Five-Line Problem Statement
-- **Context:** Near the National Institute of Technology (NIT) Srinagar campus at `[NEEDS_VERIFICATION: Exact shop name and location, e.g., Hazratbal Road opposite gate]`, `[NEEDS_VERIFICATION: Shopkeeper name/role]` operates a high-turnover photocopy and digital printing shop serving students and faculty.
-- **Bottleneck:** During peak academic submission hours `[NEEDS_VERIFICATION: Observed peak times, e.g., 9:00 AM - 10:30 AM / 4:00 PM - 5:30 PM]`, an unmanaged queue of `[NEEDS_VERIFICATION: Typical observed queue size, e.g., 6 to 15 students]` accumulates with highly heterogeneous print jobs (single-page forms vs. multi-page lab records vs. project reports).
-- **Impact:** The absence of clear wait-time visibility leads to counter crowding, anxiety, frequent interruptions asking *"Bhaiya mera kitna time lagega?"*, and students abandoning queues after waiting partially.
-- **Why Existing Solutions Fail:** Traditional enterprise kiosk token systems (e.g., Qmatic) and SaaS mobile waitlist platforms (e.g., Qles / Waitwhile) require expensive dedicated hardware, mandatory smartphone check-ins, or customer app downloads, none of which are compatible with rapid, cash/UPI-driven ₹2–₹50 counter transactions.
-- **Intervention Hypothesis:** A lightweight, empirical wait-time estimation tool running locally on the shopkeeper's counter laptop/desktop—calibrated with actual observed job durations and active queue depth—can provide actionable wait ranges with zero customer overhead.
+> **DISCLAIMER:**  
+> This document describes a development scenario based on a **hypothetical** photocopy and printing shop situated near the National Institute of Technology (NIT) Srinagar campus (Hazratbal area). All personas, quotes, shop details, and observations described below are **explicitly fictional and synthetic**. They serve solely as a systems engineering scenario for prototyping queue management and wait-time algorithms. No real shopkeeper was interviewed for this development prototype, and no field research was fabricated.
 
 ---
 
-## 2. Target Subject & Field Site Profile
-- **Shop Name:** `[NEEDS_VERIFICATION: Real shop name]`
-- **Location:** `[NEEDS_VERIFICATION: Distance / landmark relative to NIT Srinagar]`
-- **Key Operator / Role:** `[NEEDS_VERIFICATION: Name of shopkeeper / attendant, recorded only with permission]`
-- **Equipment In Use:** `[NEEDS_VERIFICATION: Number and model of printers/photocopiers, e.g., Canon imageRUNNER / HP LaserJet]`
-- **Primary Job Intake Channels:** `[NEEDS_VERIFICATION: WhatsApp Web, USB Flash Drive, Direct Email, Hardcopy Photostat]`
-- **Consent Status:** `[NEEDS_VERIFICATION: Explicit verbal permission obtained for study and photography without student face capture]`
+## 1. Scenario Background (Fictional Development Context)
+
+### 1.1 Setting
+- **Hypothetical Location:** Near Gate 2 / Main Road, Hazratbal, adjacent to NIT Srinagar, Jammu & Kashmir.
+- **Hypothetical Shop Concept:** "Chinar QuickPrint & Documentation Services" (Fictional).
+- **Core Operations:**
+  - High-volume black-and-white lecture note printing and past-year paper reproduction.
+  - Multi-copy photocopy batches for course handouts.
+  - Colour report printing for lab submissions and project abstracts.
+  - High-resolution document scanning for government scholarship and university portal uploads.
+  - Spiral and soft thermal binding for major project reports and dissertations.
+
+### 1.2 Identified Problem Dimensions
+1. **Unpredictable Bottlenecks During Academic Deadlines:**
+   - Peaks occur around 09:30–11:30 AM (pre-lecture note rushes) and 02:00–04:30 PM (pre-lab submission deadlines).
+   - High variance between service times: a student printing a 2-page admit card takes ~2 minutes, whereas a scholar binding a 180-page thesis takes 14–18 minutes.
+2. **First-In, First-Out (FIFO) Ambiguity Across Heterogeneous Equipment:**
+   - Single-queue arrival creates frustration when different equipment (e.g., dedicated scanner vs. heavy-duty photocopier vs. manual coil punch binder) could process smaller independent jobs concurrently if routing were transparent.
+3. **Information Asymmetry:**
+   - Arriving students have no visibility into the backlog ahead of them, causing either unnecessary crowd congregation inside the shop or abandoned queues.
+   - The shop operator cannot easily compute or convey realistic delivery windows when juggling simultaneous walk-ins and phone requests.
 
 ---
 
-## 3. Analysis of Existing Solutions
+## 2. Research Dimensions & Open Questions
 
-### Solution A: Enterprise Kiosk & Physical Ticket Calling (e.g., Qmatic / Wavetec)
-- **Mechanism:** Customers pull physical numbered thermal tickets from a standing kiosk; displays/speakers call tickets in order.
-- **Strengths:** Clear first-come, first-served fairness; no smartphone required.
-- **Failure Mode for Campus Print Shop:**
-  - High capital cost ($1,500+) and recurring maintenance of thermal printers/paper.
-  - Requires dedicated physical footprint unavailable in compact 80–120 sq ft campus booths.
-  - Does not account for job heterogeneity (a 1-page admit card looks identical to a 120-page spiral-bound thesis to the token dispenser).
-
-### Solution B: SaaS Virtual Queue Apps (e.g., Qles / Waitwhile)
-- **Mechanism:** Customers scan a QR code to enter their mobile number, receive an SMS with estimated wait time, and are summoned via SMS.
-- **Strengths:** Allows customers to wait remotely; digital real-time tracking.
-- **Failure Mode for Campus Print Shop:**
-  - High friction: students will not fill a 4-field web form for a ₹5 photocopy.
-  - Requires continuous cellular data and SMS charges.
-  - Places high administrative burden on the shopkeeper to manually click "Complete" and "Next" on an external web interface while processing fast-paced payments.
+| Research Dimension | Engineering Hypothesis | Required Real-World Field Validation |
+| :--- | :--- | :--- |
+| **Service Duration Distribution** | Service durations follow job-type clusters rather than a single Poisson distribution. | Stopwatch time-study across distinct job categories over 3 operational days. |
+| **Queue Position vs. Perceived Wait** | Buffer percentage (15–25%) accounts for minor paper jams, file conversion delays, and payment handoffs. | Measured delta between calculated physical service time and actual customer egress time. |
+| **Device Parallelism** | Separate devices allow parallel serving paths if machine allocation is tracked. | Equipment inventory audit and operator workflow observation. |
 
 ---
 
-## 4. Academic & Theoretical Grounding
+## 3. Placeholders for Verified Field Research (Pending Collection)
 
-1. **Maister, David H. (1985). *"The Psychology of Waiting Lines."***
-   - *Core Principle:* Unexplained, uncertain waits feel significantly longer and produce more frustration than finite, explained waits.
-   - *Application to CampusPrint:* Even without altering physical printing speeds, presenting a calibrated wait window (e.g., "12–16 minutes based on 4 jobs ahead") reduces counter anxiety and prevents constant verbal interruptions.
-
-2. **Gross, D., Shortle, J. F., Thompson, J. M., & Harris, C. M. (2008). *"Fundamentals of Queueing Theory"*, 4th Edition.**
-   - *Core Principle:* Multi-class service facilities with high service-time variance ($\sigma^2$) deviate heavily from naive deterministic estimations ($W \neq N \times \bar{x}$).
-   - *Application to CampusPrint:* The estimator must categorize jobs by type (e.g., quick photostat vs. multi-page color report with binding) rather than treating every queued student as a uniform unit time.
-
----
-
-## 5. Shopkeeper Interview Protocol
-- Question 1: What are your busiest hours during weekdays, and what types of jobs arrive then?
-- Question 2: When students ask how long it will take, how do you currently estimate it?
-- Question 3: What part of a job causes the biggest delay (file transfer, machine speed, binding, or payment)?
-- Question 4: Do students ever leave queued jobs or complain about unexpected delays?
-- Question 5: Would a simple dashboard indicating estimated clearing time be helpful, or would it get in the way of operations?
-
----
-
-## 6. Verification Status Checklist
-- [ ] Field observation conducted at verified shop location
-- [ ] 2 timestamped photographs captured (with permission)
-- [ ] Verified shopkeeper conversation recorded with 3 verbatim statements
-- [ ] At least 1 counter-intuitive / surprising finding documented
-- [ ] Minimum 20 consecutive real job records logged in `data.csv`
-- [ ] Empirical job duration parameters verified before model calibration
+- **[PENDING] Verified Shop Identity:**  
+  *Name, exact shopkeeper name, commercial registration / location coordinates near NIT Srinagar.*
+- **[PENDING] Verified Shopkeeper Interview:**  
+  *Audio transcript / signed interview notes detailing daily operational hurdles, peak hours, pricing models, and equipment constraints.*
+- **[PENDING] Empirical Customer Observation Logs:**  
+  *Timestamped arrival and departure logs observed by the student investigator in person.*
+- **[PENDING] Academic Literature / Contextual Citations:**  
+  *Formal queueing theory references (M/G/1 or M/M/c queues applied to retail service counters).*

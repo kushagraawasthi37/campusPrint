@@ -1,0 +1,7 @@
+job_id,arrival_time,service_start,service_end,job_type,pages,copies,queue_ahead,device,amount
+ERR-001,2026-11-20 09:10:00,2026-11-20 09:12:00,2026-11-20 09:16:00,,20,1,1,Canon IR-2525,40
+ERR-002,2026-11-20 09:30:00,2026-11-20 09:32:00,2026-11-20 09:38:00,B&W printing,-15,1,2,Canon IR-2525,30
+ERR-003,2026-11-20 25:70:00,2026-11-20 10:05:00,2026-11-20 10:12:00,Colour printing,10,1,1,HP Color LaserJet Pro,100
+ERR-004,2026-11-20 10:20:00,2026-11-20 10:35:00,2026-11-20 10:25:00,Scanning,12,1,0,Epson Perfection V39,60
+ERR-005,2026-11-20 11:00:00,2026-11-20 11:05:00,2026-11-20 11:18:00,Spiral binding,80,1,-3,GBC Binder Pro,80
+VAL-001,2026-11-20 11:30:00,2026-11-20 11:32:15,2026-11-20 11:37:00,Photocopy,30,1,1,Canon IR-2525,30
